@@ -1,0 +1,157 @@
+[{
+    "queries" : [
+        {
+            "question" : "how are you",
+            "answer" : ["I am fine, and yourself?"]
+        },
+        {
+            "question" : "who are you",
+            "answer" : ["I am your chat bot..."]
+        },
+        {
+            "question" : "a joke",
+            "answer" : [
+                "Ooops, I farted 💩", 
+                "Question: Is Google male or female? Answer: Female, because it doesn't let you finish a sentence before making a suggestion. 🙊",
+                "Question: Why did the witches' team lose the baseball game? Answer: Their bats flew away. 🙊",
+                "I am sorry, I am not funny today"
+            ]
+        },
+        {
+            "question" : "say hi ",
+            "answer" : ["Hi there!"]
+        },
+        {
+            "question": "my name is",
+            "answer": ["Hi there!"]
+        },
+        {
+            "question": "what's your name",
+            "answer": [
+                "My name is: THE CHAT BOT"
+            ]
+        },
+        {
+            "question": "thank you",
+            "answer": ["You're so welcome!"]
+        },
+        {
+            "question": "thanks",
+            "answer": ["You're welcome"]
+        },
+        {
+            "question": "i love you",
+            "answer": ["Ok! I love you too, I guess..."]
+        },
+        {
+            "question": "hallelujah",
+            "answer": ["Amen!"]
+        },
+        {
+            "question": "i'm fine thanks",
+            "answer": ["Oh good, I am glad."]
+        },
+        {
+            "question": "i am okay",
+            "answer": ["Oh good!"]
+        },
+        {
+            "question": "i am sad",
+            "answer": ["Oh NO!"]
+        },
+        {
+            "question": "what are you doing",
+            "answer": [
+                "I am listening to you ;)",
+                "Hardly anything..."
+            ]
+        },
+        {
+            "question": "want to play",
+            "answer": [
+                "Sure, what's on?", "Hmm, I don't think so..."
+            ]
+        },
+        {
+            "question": "hahaha",
+            "answer": ["What's so funny??",
+                "Har har harrr yourself!"
+            ]
+        },
+        {
+            "question": "are you still listening",
+            "answer": [
+                "Yep",
+                "Duh!",
+                "Nope, haha..."
+            ]
+        },
+        {
+            "question": "you are so funny",
+            "answer": [
+                "Really?? How come?"
+            ]
+        },
+        {
+            "question": "hey",
+            "answer": ["Hey!"]
+        },
+        {
+            "question": "hello",
+            "answer": [
+                "Hi there",
+                "Hello, how can I help?"
+            ]
+        },
+        {
+            "question": "hi",
+            "answer": [
+                "Hi there",
+                "Hello, how can I help?"
+            ]
+        },
+        {
+            "question": "hi there",
+            "answer": [
+                "Hi there",
+                "Hello, how can I help?"
+            ]
+        },
+        {
+            "question": "nice to meet you",
+            "answer": [
+                "Nice to meet you too!"
+            ]
+        },
+        {
+            "question": "what's your favorite color",
+            "answer": [
+                "Purple, yesss!"
+            ]
+        },
+        {
+            "question": "what's your favorite dish",
+            "answer": [
+                "Electricity! Yummy :P"
+            ]
+        },
+        {
+            "question": "what's up",
+            "answer": ["Nothing much, just chillin"]
+        },
+        {
+            "question": "what's going on",
+            "answer": [
+                "Dunno, you tell me"
+            ]
+        },
+        {
+            "question": "you are so pretty",
+            "answer": [
+                "Thanks",
+                "I have no body...",
+                "Thx, so kind of you"
+            ]
+        }
+    ] 
+}]

@@ -1,0 +1,101 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+html{
+    scroll-behavior: smooth;
+}
+body{
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 1rem;
+    color: rgb(47, 47, 47);
+    letter-spacing: 1px;
+    line-height: 1.2rem;
+    text-align: center;
+    padding: 30px;
+}
+
+.output img{
+    width: 60%;
+    display: block;
+}
+
+h1{
+    font-family: 'Audiowide', cursive;
+    font-size: 7rem;
+    line-height: 7.1rem;
+    margin-bottom: 50px;
+
+}
+button {
+    box-shadow: inset 0px 1px 0px 0px #caefab;
+    background: linear-gradient(to bottom, #77d42a 5%, #5cb811 100%);
+    background-color: #77d42a;
+    border-radius: 6px;
+    border: 1px solid #268a16;
+    display: block;
+    cursor: pointer;
+    color: #306108;
+    font-size: 0.7rem;
+    font-weight: bold;
+    padding: 6px 24px;
+    text-decoration: none;
+    text-shadow: 0px 1px 0px #aade7c;
+    position: relative;
+    margin: 10px auto;
+}
+
+button:hover {
+    background: linear-gradient(to bottom, #5cb811 5%, #77d42a 100%);
+    background-color: #5cb811;
+}
+button:active {
+    top: 1px;
+}
+
+
+input[type=text], select {
+    width: 300px;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+p.hints{
+    margin: 30px 0;
+    
+
+}
+#command{
+    margin: 30px 0;
+}
+p.output{
+    color: #5cb811;
+    background: #000000cc;
+    padding: 10px 20px;
+    border: 2px solid #9f9f9f;
+    border-radius: 62px;
+    box-shadow: 0 10px 20px #9b9b9b;
+    width: 300px;
+    position: relative;
+    margin: 0 auto;
+}
+
+#answer {
+    background: #008b8b4a;
+    width: 300px;
+    height: 300px;
+    padding: 20px;
+    border-radius: 30px;
+    position: relative;
+    margin: 30px auto;
+    color: #444444;
+    line-height: 1.4rem;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    font-weight: bold;
+}

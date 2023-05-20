@@ -23,10 +23,13 @@ body{
 
 h1{
     font-family: 'Audiowide', cursive;
-    font-size: 7rem;
-    line-height: 7.1rem;
+    font-size: 1.2rem;
+    line-height: 1.4rem;
     margin-bottom: 50px;
 
+}
+#logo{
+    display: inline-block;
 }
 button {
     box-shadow: inset 0px 1px 0px 0px #caefab;
@@ -98,4 +101,34 @@ p.output{
     font-size: 0.9rem;
     letter-spacing: 1px;
     font-weight: bold;
+}
+
+
+@keyframes speak {
+    50% {
+        opacity: 0.5;
+        height: 10px;
+    }
+}
+#mouth.speak {
+    animation: speak 1s step-start 0s infinite;
+}
+
+@keyframes blink {
+    50% {
+        opacity: 0.2;
+    }
+}
+#leye, #reye {
+    transition: all 0.2s ease-in;
+    animation: blink 2s infinite;
+}
+@keyframes shake {
+    50% {
+        transform: translateY(-3px);
+    }
+}
+
+#e-bot{
+    animation: shake 1s step-start 0s infinite
 }

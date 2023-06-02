@@ -284,14 +284,30 @@ function parseCommand(command) {
 }
 
 function parseDefinition(definition) {
-    (async function storeToDB() {
-        const response = await fetch("views/chatbot.php?record=" + definition + "&keyword=" + travellingKeyword);
-        const jsonData = await response.json();
-        console.log(jsonData);
-        definitionInProgress = false;
-        // reset match variable
-        weHaveAMatch = false;
-    })();
+    if(definition == " " || definition == "") {
+        let askText = "Please give me some input on: " + travellingKeyword;
+        let utterance = new SpeechSynthesisUtterance(askText);
+        speechSynthesis.speak(utterance);
+        myAnswer.innerHTML = askText;
+        animateMouth(askText);
+    } else {
+        myQuestionBox.value = "";
+        (async function storeToDB() {
+            const response = await fetch("views/chatbot.php?record=" + definition + "&keyword=" + travellingKeyword);
+            const jsonData = await response.json();
+            console.log(jsonData);
+            if(jsonData[0].status === "DATA SAVED") {
+                let confirmText = "Cool, now I know what " + travellingKeyword + " is.";
+                let utterance = new SpeechSynthesisUtterance(confirmText);
+                speechSynthesis.speak(utterance);
+                myAnswer.innerHTML = confirmText;
+                animateMouth(confirmText);
+            }
+            definitionInProgress = false;
+            // reset match variable
+            weHaveAMatch = false;
+        })();
+    }
 }
 
 recognition.onresult = function(event) {

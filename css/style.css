@@ -31,7 +31,7 @@ h1{
 #logo{
     display: inline-block;
 }
-button {
+/* button {
     box-shadow: inset 0px 1px 0px 0px #caefab;
     background: linear-gradient(to bottom, #77d42a 5%, #5cb811 100%);
     background-color: #77d42a;
@@ -55,8 +55,19 @@ button:hover {
 }
 button:active {
     top: 1px;
-}
+} */
 
+button{
+    background:#24FF00;
+    color:black;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    margin-top: 1rem;
+}
+button:hover{
+    background:#18a402;
+}
 
 input[type=text], select {
     width: 300px;
@@ -132,3 +143,22 @@ p.output{
 #e-bot{
     animation: shake 1s step-start 0s infinite
 }
+
+
+#textboxes{
+    position: fixed;
+    top:0px;
+    left: calc(100% - 500px);
+    width: 300px;
+    opacity: 0.6;
+  }
+
+
+@media only screen and (max-width:1300px) {
+      #textboxes{
+        position: relative;
+        margin: 0 auto;
+        top:unset;
+        left: unset;
+    }
+} 

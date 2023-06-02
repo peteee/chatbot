@@ -22,13 +22,9 @@
             "answer" : ["Hi there!"]
         },
         {
-            "question": "my name is",
-            "answer": ["Hi there!"]
-        },
-        {
             "question": "what's your name",
             "answer": [
-                "My name is: THE CHAT BOT"
+                "My name is: E-Bot, THE CHAT BOT"
             ]
         },
         {
@@ -48,8 +44,12 @@
             "answer": ["Amen!"]
         },
         {
-            "question": "i'm fine thanks",
+            "question": "i'm fine",
             "answer": ["Oh good, I am glad."]
+        },
+        {
+            "question": "i am fine",
+            "answer": ["Wonderful."]
         },
         {
             "question": "i am okay",
@@ -111,26 +111,19 @@
             ]
         },
         {
-            "question": "hi there",
-            "answer": [
-                "Hi there",
-                "Hello, how can I help?"
-            ]
-        },
-        {
             "question": "nice to meet you",
             "answer": [
                 "Nice to meet you too!"
             ]
         },
         {
-            "question": "what's your favorite color",
+            "question": "what's your favourite colour",
             "answer": [
                 "Purple, yesss!"
             ]
         },
         {
-            "question": "what's your favorite dish",
+            "question": "what's your favourite dish",
             "answer": [
                 "Electricity! Yummy :P"
             ]

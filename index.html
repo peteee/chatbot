@@ -55,13 +55,17 @@
         <circle cx="5.5" cy="5.5" r="5.5" transform="matrix(-1 0 0 1 98 0)" fill="#404040"/>
     </svg>
     
-    <button id="record">🎤 Talk to me</button>
+    <p><button id="record">🎤 Talk to me</button></p>
 
-    <p class="hints"></p>
-    <p><input type="text" name="command" id="command" onchange="parseCommand(this.value)" placeholder="type something"></p>
-    <p class="output"><em>...diagnostic messages</em></p>
-
-    <div id="answer">...</div>
+    <div id="textboxes">
+        <p class="hints"></p>
+        <p>
+            
+            <input type="text" name="command" id="command" onchange="(!definitionInProgress) ? parseCommand(this.value) : parseDefinition(this.value)" placeholder="...or type something">
+        </p>
+        <p class="output"><em>...diagnostic messages</em></p>
+        <div id="answer">...</div>
+    </div>
 
 </body>
 </html>

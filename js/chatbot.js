@@ -1,17 +1,23 @@
 var SpeechRecognition = SpeechRecognition || webkitSpeechRecognition
 var SpeechRecognitionEvent = SpeechRecognitionEvent || webkitSpeechRecognitionEvent
-var recognition = new SpeechRecognition();
+//var recognition = new SpeechRecognition();
+var recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition || window.mozSpeechRecognition || window.msSpeechRecognition)();
 recognition.continuous = false;
 recognition.lang = 'en-US';
 recognition.interimResults = false;
 recognition.maxAlternatives = 1;
 
+/**
+ * Switches | Boolean
+ */
 let weHaveAMatch = false;
+let definitionInProgress = false;
+let travellingKeyword = '';
 
 let diagnostic = document.querySelector('.output');
 let hints = document.querySelector('.hints');
 
-hints.innerHTML = 'Click button and say something or type a message';
+// hints.innerHTML = 'Click button and say something or type a message';
 
 let micBtn = document.getElementById("record");
 //.document.body.
@@ -49,6 +55,13 @@ function animateMouth(sentence) {
     }, speakTimer);
 }
 
+//asking an initial question or greeting
+initialQuestion = "Hey, how are you today?";
+myAnswer.innerHTML = initialQuestion;
+let utterance = new SpeechSynthesisUtterance(initialQuestion);
+speechSynthesis.speak(utterance);
+animateMouth(initialQuestion);
+
 function parseCommand(command) {
     console.log(command);
     myQuestionBox.value = "";
@@ -72,7 +85,7 @@ function parseCommand(command) {
         console.log("Yay! Yummy :P");
         hints.innerHTML = '<img src="https://api.pizzahut.io/v1/content/en-ca/ca-1/images/pizza/pizza.supreme-lovers.3706cdc20b0752ac212c0d68a310fb18.1.jpg">'
         weHaveAMatch = true;
-        animateMouth("Yay! Yummy :P");
+        //animateMouth("Yay! Yummy :P");
     }
 
     // Look for "i like pizza"
@@ -112,7 +125,114 @@ function parseCommand(command) {
         weHaveAMatch = true;
     }
 
-    (async function callJSONData() {
+    if(patternTest(/my name is/g, command)) {
+        //console.log(command.substring(0, 10));
+        //console.log(command.substring(11));
+        function capitalizeFirstLetter(string) {
+            return string.charAt(0).toUpperCase() + string.slice(1);
+        }
+
+        let personName = capitalizeFirstLetter(command.substring(11));
+        let greeting = "Hi there " + personName; 
+        let utterance = new SpeechSynthesisUtterance(greeting);
+        speechSynthesis.speak(utterance);
+        myAnswer.innerHTML = greeting;
+        weHaveAMatch = true;
+        animateMouth(greeting);
+
+        /**
+         * storing to DB
+         */
+
+        //1st attempt: localStorage
+        // localStorage.setItem("name", personName);
+        
+        //2nd attempt: MariaDB
+        async function storeUser() {
+            const response = await fetch("views/chatbot.php?store-user=" + personName);
+            const jsonData = await response.json();
+            console.log(jsonData);
+            if(jsonData[0].error) alert("User exists");
+        }
+        storeUser();
+    }
+
+    if(patternTest(/who am i/g, command) 
+    || patternTest(/what's my name/g, command) 
+    || patternTest(/do you remember me/g, command)) {
+        
+        //// 1st attempt: localStorage
+        // let personName = localStorage.getItem("name");
+        // let greeting = "You are " + personName + ".";
+        // let utterance = new SpeechSynthesisUtterance(greeting);
+        // speechSynthesis.speak(utterance);
+        // myAnswer.innerHTML = greeting;
+        // weHaveAMatch = true;
+        // animateMouth(greeting);
+
+        
+        //2nd attempt: MariaDB
+        async function getUser() {
+            const response = await fetch("views/chatbot.php?get-user");
+            const jsonData = await response.json();
+            console.log(jsonData);
+            //if(jsonData[0].error) alert("User exists");
+            // let personName = ...
+            let personName = jsonData[0].name;
+            let greeting = "You are " + personName + ".";
+            let utterance = new SpeechSynthesisUtterance(greeting);
+            speechSynthesis.speak(utterance);
+            myAnswer.innerHTML = greeting;
+            weHaveAMatch = true;
+            animateMouth(greeting);
+        }
+        getUser();
+
+    }
+
+
+    if(patternTest(/please record the term/g, command)) {
+        let newKeyword = command.substring(23);
+        console.log(newKeyword);
+        travellingKeyword = newKeyword;
+        definitionInProgress = true;
+        console.log('Ready to receive a definition. Click button or type...');
+        
+        let instructions = "Ok, cool. I am ready to receive a definition!";
+        let utterance = new SpeechSynthesisUtterance(instructions);
+        speechSynthesis.speak(utterance);
+        myAnswer.innerHTML = instructions;
+        weHaveAMatch = true;
+        animateMouth(instructions);
+
+        
+    }
+
+    (async function callDB() {
+        const response = await fetch("views/chatbot.php?q=" + command);
+        const jsonData = await response.json();
+        console.log(jsonData);
+
+        if(jsonData.length !== 0) {
+            let currentAnswer = jsonData[0].answers;
+
+            let utterance = new SpeechSynthesisUtterance(currentAnswer);
+            speechSynthesis.speak(utterance);
+            myAnswer.innerHTML = currentAnswer;
+            weHaveAMatch = true;
+            animateMouth(currentAnswer);
+
+            // reset match variable
+            weHaveAMatch = false;
+        } else {
+            callJSONData();
+        }
+
+    })();
+
+    // if(!weHaveAMatch) {
+    //(
+    async function callJSONData() {
         const response = await fetch("data/data.json");
         const jsonData = await response.json();
         console.log(jsonData);
@@ -155,10 +275,23 @@ function parseCommand(command) {
         // reset match variable
         weHaveAMatch = false;
 
-    })();
+        }
+        
+        //); //();
     // callJSONData();
+    // }
 
+}
 
+function parseDefinition(definition) {
+    (async function storeToDB() {
+        const response = await fetch("views/chatbot.php?record=" + definition + "&keyword=" + travellingKeyword);
+        const jsonData = await response.json();
+        console.log(jsonData);
+        definitionInProgress = false;
+        // reset match variable
+        weHaveAMatch = false;
+    })();
 }
 
 recognition.onresult = function(event) {
@@ -173,7 +306,7 @@ recognition.onresult = function(event) {
     let text = event.results[0][0].transcript;
     diagnostic.textContent = 'Result received: ' + text + '.';
     console.log('Confidence: ' + event.results[0][0].confidence);
-    parseCommand(text);
+    (!definitionInProgress) ? parseCommand(text) : parseDefinition(text); //null
 
 }
 

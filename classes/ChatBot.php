@@ -127,13 +127,15 @@ class ChatBot {
                     $rArray[] = [
                         "id"=>$insertStmt->insert_id
                     ];
+                    $_SESSION["active-user"] = $insertStmt->insert_id;
                 } else {
                     $rArray[] = [
                         "error"=>"nothing inserted"
                     ];
+                    $_SESSION["active-user"] = 1;
                 }
         
-                $_SESSION["active-user"] = $insertStmt->insert_id;
+                //$_SESSION["active-user"] = $insertStmt->insert_id;
                 $insertStmt->close();
         
             } else {

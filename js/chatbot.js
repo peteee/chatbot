@@ -12,6 +12,8 @@ recognition.maxAlternatives = 1;
  */
 let weHaveAMatch = false;
 let definitionInProgress = false;
+
+// for new recorded words & phrases
 let travellingKeyword = '';
 
 let diagnostic = document.querySelector('.output');
@@ -145,16 +147,16 @@ function parseCommand(command) {
          */
 
         //1st attempt: localStorage
-        // localStorage.setItem("name", personName);
+        localStorage.setItem("name", personName);
         
         //2nd attempt: MariaDB
-        async function storeUser() {
-            const response = await fetch("views/chatbot.php?store-user=" + personName);
-            const jsonData = await response.json();
-            console.log(jsonData);
-            if(jsonData[0].error) alert("User exists");
-        }
-        storeUser();
+        // async function storeUser() {
+        //     const response = await fetch("views/chatbot.php?store-user=" + personName);
+        //     const jsonData = await response.json();
+        //     console.log(jsonData);
+        //     if(jsonData[0].error) alert("User exists");
+        // }
+        // storeUser();
     }
 
     if(patternTest(/who am i/g, command) 
@@ -162,34 +164,33 @@ function parseCommand(command) {
     || patternTest(/do you remember me/g, command)) {
         
         //// 1st attempt: localStorage
-        // let personName = localStorage.getItem("name");
-        // let greeting = "You are " + personName + ".";
-        // let utterance = new SpeechSynthesisUtterance(greeting);
-        // speechSynthesis.speak(utterance);
-        // myAnswer.innerHTML = greeting;
-        // weHaveAMatch = true;
-        // animateMouth(greeting);
+        let personName = localStorage.getItem("name");
+        let greeting = "You are " + personName + ".";
+        let utterance = new SpeechSynthesisUtterance(greeting);
+        speechSynthesis.speak(utterance);
+        myAnswer.innerHTML = greeting;
+        weHaveAMatch = true;
+        animateMouth(greeting);
 
         
         //2nd attempt: MariaDB
-        async function getUser() {
-            const response = await fetch("views/chatbot.php?get-user");
-            const jsonData = await response.json();
-            console.log(jsonData);
-            //if(jsonData[0].error) alert("User exists");
-            // let personName = ...
-            let personName = jsonData[0].name;
-            let greeting = "You are " + personName + ".";
-            let utterance = new SpeechSynthesisUtterance(greeting);
-            speechSynthesis.speak(utterance);
-            myAnswer.innerHTML = greeting;
-            weHaveAMatch = true;
-            animateMouth(greeting);
-        }
-        getUser();
+        // async function getUser() {
+        //     const response = await fetch("views/chatbot.php?get-user");
+        //     const jsonData = await response.json();
+        //     console.log(jsonData);
+        //     //if(jsonData[0].error) alert("User exists");
+        //     // let personName = ...
+        //     let personName = jsonData[0].name;
+        //     let greeting = "You are " + personName + ".";
+        //     let utterance = new SpeechSynthesisUtterance(greeting);
+        //     speechSynthesis.speak(utterance);
+        //     myAnswer.innerHTML = greeting;
+        //     weHaveAMatch = true;
+        //     animateMouth(greeting);
+        // }
+        // getUser();
 
     }
-
 
     if(patternTest(/please record the term/g, command)) {
         let newKeyword = command.substring(23);
@@ -204,10 +205,26 @@ function parseCommand(command) {
         myAnswer.innerHTML = instructions;
         weHaveAMatch = true;
         animateMouth(instructions);
-
         
     }
 
+    if(!weHaveAMatch) {
+        for (const [key, value] of Object.entries(localStorage)) {
+            //console.log(key.substring(0, 5), value);
+            if(key.substring(0, 5)==="term-") {
+                let regex = new RegExp(key.substring(6), "g");
+                if(patternTest(regex, command)) {
+                    let utterance = new SpeechSynthesisUtterance(value);
+                    speechSynthesis.speak(utterance);
+                    myAnswer.innerHTML = value;
+                    weHaveAMatch = true;
+                    animateMouth(value);
+                    break;
+                }
+            }
+        }
+    }
+    
     (async function callDB() {
         const response = await fetch("views/chatbot.php?q=" + command);
         const jsonData = await response.json();
@@ -230,8 +247,6 @@ function parseCommand(command) {
 
     })();
 
-    // if(!weHaveAMatch) {
-    //(
     async function callJSONData() {
         const response = await fetch("data/data.json");
         const jsonData = await response.json();
@@ -239,7 +254,7 @@ function parseCommand(command) {
         // window.myJSON = jsonData;
         // //window.myJSON[0].queries[0].answer;
         jsonData[0].queries.forEach((item, index) => {
-            console.log(item.question + " : " + item.answer);
+            //console.log(item.question + " : " + item.answer);
             let regex = new RegExp(item.question, "g");
             if(patternTest(regex, command)) {
                 // alert("success");
@@ -275,11 +290,9 @@ function parseCommand(command) {
         // reset match variable
         weHaveAMatch = false;
 
-        }
-        
-        //); //();
+    }
+
     // callJSONData();
-    // }
 
 }
 
@@ -292,21 +305,34 @@ function parseDefinition(definition) {
         animateMouth(askText);
     } else {
         myQuestionBox.value = "";
-        (async function storeToDB() {
-            const response = await fetch("views/chatbot.php?record=" + definition + "&keyword=" + travellingKeyword);
-            const jsonData = await response.json();
-            console.log(jsonData);
-            if(jsonData[0].status === "DATA SAVED") {
-                let confirmText = "Cool, now I know what " + travellingKeyword + " is.";
-                let utterance = new SpeechSynthesisUtterance(confirmText);
-                speechSynthesis.speak(utterance);
-                myAnswer.innerHTML = confirmText;
-                animateMouth(confirmText);
-            }
-            definitionInProgress = false;
-            // reset match variable
-            weHaveAMatch = false;
-        })();
+
+        // PHP & SQL
+        // (async function storeToDB() {
+        //     const response = await fetch("views/chatbot.php?record=" + definition + "&keyword=" + travellingKeyword);
+        //     const jsonData = await response.json();
+        //     console.log(jsonData);
+        //     if(jsonData[0].status === "DATA SAVED") {
+        //         let confirmText = "Cool, now I know what " + travellingKeyword + " is.";
+        //         let utterance = new SpeechSynthesisUtterance(confirmText);
+        //         speechSynthesis.speak(utterance);
+        //         myAnswer.innerHTML = confirmText;
+        //         animateMouth(confirmText);
+        //     }
+        //     definitionInProgress = false;
+        //     // reset match variable
+        //     weHaveAMatch = false;
+        // })();
+
+        // JavaScript ONLY Solution (fall-back solution)
+        localStorage.setItem(`term-${travellingKeyword}`, definition);
+        let confirmText = "Cool, now I know what " + travellingKeyword + " is.";
+        let utterance = new SpeechSynthesisUtterance(confirmText);
+        speechSynthesis.speak(utterance);
+        myAnswer.innerHTML = confirmText;
+        animateMouth(confirmText);
+        definitionInProgress = false;
+        // reset match variable
+        weHaveAMatch = false;
     }
 }
 
